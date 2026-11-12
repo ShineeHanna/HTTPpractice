@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"pack/configs"
+	"pack/pkg"
 )
 
 type Handler struct { //структура, чтобы мы могли решистрировать определенные методы
@@ -26,13 +26,11 @@ func NewHandler(router *http.ServeMux, deps HandlerDeps) { //уже обрабо
 
 func (handler *Handler) Login() http.HandlerFunc { //методы для структуры handler
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Login")
-		res := LoginResponse{
+		fmt.Println("Login")
+		data := LoginResponse{
 			Token: "123",
 		}
-		w.Header().Set("Content-Type", "application/json") //обозначем каким типом у нас будет ответ
-		w.WriteHeader(201)                                 //обозначем статус код
-		json.NewEncoder(w).Encode(res)
+		pkg.Json(w, data, 200)
 	}
 }
 func (handler Handler) Register() http.HandlerFunc {
