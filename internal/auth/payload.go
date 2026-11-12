@@ -5,6 +5,6 @@ type LoginResponse struct { //описываем возвращаемую стр
 }
 
 type LoginRequest struct { //то, что приходит и как его интерпретировать
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required, email"`
+	Password string `json:"password" validate:"required"`
 }

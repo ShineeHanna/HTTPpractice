@@ -7,6 +7,8 @@ import (
 	"pack/configs"
 	"pack/pkg"
 	"regexp"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type Handler struct { //структура, чтобы мы могли решистрировать определенные методы
@@ -36,6 +38,12 @@ func (handler *Handler) Login() http.HandlerFunc { //методы для стр�
 		}
 		reg, _ := regexp.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z{2,}]`)
 		if !reg.MatchString(payload.Email) { //проверка на корректно введенный email
+			pkg.Json(w, "Wrong email", 402)
+			return
+		}
+		validate := validator.New()
+		err = validate.Struct(payload)
+		if err != nil {
 			pkg.Json(w, "Wrong email", 402)
 			return
 		}
