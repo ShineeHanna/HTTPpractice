@@ -3,14 +3,17 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"pack/configs"
 	"pack/internal/auth"
 )
 
 func main() {
-	///conf :=configs.LoadConfig()
+	conf := configs.LoadConfig()
 	router := http.NewServeMux()
 
-	auth.NewHandler(router)
+	auth.NewHandler(router, auth.HandlerDeps{
+		Config: conf,
+	})
 	// Запускаем сервер
 	server := http.Server{
 		Addr:    ":8080",
