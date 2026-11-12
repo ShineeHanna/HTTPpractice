@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"pack/internal/hello"
+	"pack/internal/auth"
 )
 
 func main() {
+	///conf :=configs.LoadConfig()
 	router := http.NewServeMux()
 
-	hello.NewHandler(router)
+	auth.NewHandler(router)
 	// Запускаем сервер
 	server := http.Server{
 		Addr:    ":8080",
