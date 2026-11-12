@@ -21,16 +21,16 @@ type AuthConfig struct {
 }
 
 func LoadConfig() *Config {
-	err := godotenv.Load()
+	err := godotenv.Load() //получаем зависимости из файла .env
 	if err != nil {
 		log.Println("Erorr loading .env fule, using default config")
 	}
-	return &Config{
+	return &Config{ //при успешном получении присваиваем значение в наши поля
 		Db: DbConfig{
-			Dsn: os.Getenv("DSN"),
+			Dsn: os.Getenv("DSN"), //получаем значение по названию DSN
 		},
 		Auth: AuthConfig{
-			Secret: os.Getenv("TOKEN"),
+			Secret: os.Getenv("TOKEN"), //получаем значение по названию TOKEN
 		},
 	}
 }

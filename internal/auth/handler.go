@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"pack/configs"
@@ -26,7 +27,12 @@ func NewHandler(router *http.ServeMux, deps HandlerDeps) { //уже обрабо
 func (handler *Handler) Login() http.HandlerFunc { //методы для структуры handler
 	return func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Login")
-		fmt.Fprintln(w, "handler.Config.Auth.Secret")
+		res := LoginResponse{
+			Token: "123",
+		}
+		w.Header().Set("Content-Type", "application/json") //обозначем каким типом у нас будет ответ
+		w.WriteHeader(201)                                 //обозначем статус код
+		json.NewEncoder(w).Encode(res)
 	}
 }
 func (handler Handler) Register() http.HandlerFunc {
