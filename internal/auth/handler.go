@@ -1,14 +1,11 @@
 package auth
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"pack/configs"
 	"pack/pkg"
-	"regexp"
-
-	"github.com/go-playground/validator/v10"
+	reqbody "pack/pkg/req"
 )
 
 type Handler struct { //структура, чтобы мы могли решистрировать определенные методы
@@ -31,20 +28,8 @@ func NewHandler(router *http.ServeMux, deps HandlerDeps) { //уже обрабо
 func (handler *Handler) Login() http.HandlerFunc { //методы для структуры handler
 	return func(w http.ResponseWriter, req *http.Request) {
 		//прочитать body
-		var payload LoginRequest
-		err := json.NewDecoder(req.Body).Decode(&payload)
+		payload, err := reqbody.HandleBody[LoginRequest](&w, req)
 		if err != nil {
-			pkg.Json(w, err.Error(), 402)
-		}
-		reg, _ := regexp.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z{2,}]`)
-		if !reg.MatchString(payload.Email) { //проверка на корректно введенный email
-			pkg.Json(w, "Wrong email", 402)
-			return
-		}
-		validate := validator.New()
-		err = validate.Struct(payload)
-		if err != nil {
-			pkg.Json(w, "Wrong email", 402)
 			return
 		}
 		fmt.Println(payload)
@@ -55,7 +40,11 @@ func (handler *Handler) Login() http.HandlerFunc { //методы для стр�
 	}
 }
 func (handler Handler) Register() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Register")
+	return func(w http.ResponseWriter, req *http.Request) {
+		register, err := reqbody.HandleBody[RegisterRequest](&w, req)
+		if err != nil {
+			return
+		}
+		fmt.Println(register)
 	}
 }
