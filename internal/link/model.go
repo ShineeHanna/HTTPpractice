@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Link struct { //ссылка на бд
+type Link struct { //ссылка на бд(структура для создания таблицы)
 	gorm.Model        //содержит в себе все необходимые поля для структуры, чтобы самому всё не писать подряд
 	Url        string `json:"url"`
 	Hash       string `json:"hash" gorm:"uniqueIndex"`
