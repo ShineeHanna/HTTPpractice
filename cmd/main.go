@@ -5,10 +5,12 @@ import (
 	"net/http"
 	"pack/configs"
 	"pack/internal/auth"
+	"pack/pkg/db"
 )
 
 func main() {
 	conf := configs.LoadConfig()
+	_ = db.NewDb(conf)
 	router := http.NewServeMux()
 
 	auth.NewHandler(router, auth.HandlerDeps{
