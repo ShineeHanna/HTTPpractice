@@ -15,7 +15,7 @@ type Link struct { //ссылка на бд(структура для созда
 func NewLink(url string) *Link { //формсирование новой ссылки, когда пришел новый пользователь
 	return &Link{
 		Url:  url,
-		Hash: RandStringRunes(10),
+		Hash: RandStringRunes(10), //генерация уникальной строки из рун
 	}
 }
 
