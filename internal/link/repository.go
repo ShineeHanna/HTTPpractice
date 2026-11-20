@@ -1,6 +1,10 @@
 package link
 
-import "pack/pkg/db"
+import (
+	"pack/pkg/db"
+
+	"gorm.io/gorm/clause"
+)
 
 type LinkRepository struct { //база данных полученных|созданных ссылок link
 	Database *db.Db
@@ -27,4 +31,20 @@ func (repo *LinkRepository) GetByHash(hash string) (*Link, error) { //взять
 		return nil, result.Error
 	}
 	return &link, nil
+}
+
+func (repo *LinkRepository) Update(link *Link) (*Link, error) { //одновить запись в таблице
+	result := repo.Database.DB.Clauses(clause.Returning{}).Updates(link)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return link, nil
+}
+
+func (repo *LinkRepository) Delete(id uint) error { //одновить запись в таблице
+	result := repo.Database.DB.Delete(&Link{}, id) //удалить запись по id
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
