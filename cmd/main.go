@@ -7,6 +7,7 @@ import (
 	"pack/internal/auth"
 	"pack/internal/link"
 	"pack/pkg/db"
+	"pack/pkg/middleware"
 )
 
 func main() {
@@ -26,7 +27,7 @@ func main() {
 	// Запускаем сервер
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: router,
+		Handler: middleware.Logging(router),
 	}
 	fmt.Println("Starting server at port 8080")
 	err := server.ListenAndServe()
