@@ -23,7 +23,7 @@ type AuthConfig struct {
 func LoadConfig() *Config {
 	err := godotenv.Load() //получаем зависимости из файла .env
 	if err != nil {
-		log.Println("Erorr loading .env fule, using default config")
+		log.Println("Erorr loading .env file, using default config")
 	}
 	return &Config{ //при успешном получении присваиваем значение в наши поля
 		Db: DbConfig{
